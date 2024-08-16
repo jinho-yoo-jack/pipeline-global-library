@@ -23,7 +23,7 @@ pipeline {
             steps {
                 echo "git clone"
                 git branch: 'feature/docker', credentialsId: 'ea380414-e517-45cb-91dc-882c64c04255', url: "${GIT_REPO_URL}"
-                sh "docker pull"
+                sh "git pull"
             }
         }
         stage('build'){
