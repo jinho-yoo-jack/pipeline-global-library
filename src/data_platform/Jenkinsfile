@@ -1,0 +1,43 @@
+#!groovy
+@Library('common-api') _
+
+pipeline {
+
+    agent worker_1
+
+    tools {
+        git 'git'
+        gradle 'gradle-8.9'
+        jdk21 'jdk-21'
+    }
+
+    environment {
+        GIT_REPO_URL = 'https://github.com/jinho-yoo-jack/fastcampus-ci-cd.git'
+    }
+
+    parameters {
+        // TODO: Must modify BRANCH_NAME to TAG_NAME
+        choice(name: 'BRANCH_NAME', choices: getBranchList('https://github.com/jinho-yoo-jack/fastcampus-ci-cd.git'))
+    }
+
+    stages {
+        stage('Build'){
+            steps {
+                echo "Build"
+                git clone ${GIT_REPO_URL}
+                git checkout ${env.BRANCH_NAME}
+                git pull
+                gradle build
+            }
+        }
+        stage('Test'){
+
+        }
+        stage('Deploy'){
+
+        }
+        stage('Re-Execute Application'){
+
+        }
+    }
+}
