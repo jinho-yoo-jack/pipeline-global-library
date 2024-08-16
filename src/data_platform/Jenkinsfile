@@ -5,12 +5,6 @@ pipeline {
 
     agent any 
 
-    tools {
-        git 'git'
-        gradle 'gradle-8.9'
-        jdk 'jdk-21'
-    }
-
     environment {
          GIT_REPO_URL = 'https://github.com/jinho-yoo-jack/fastcampus-ci-cd.git'
     }
