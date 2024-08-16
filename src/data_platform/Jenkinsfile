@@ -3,7 +3,7 @@
 
 pipeline {
 
-    agent worker_1
+    agent any 
 
     tools {
         git 'git'
