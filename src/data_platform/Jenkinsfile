@@ -24,7 +24,7 @@ pipeline {
         stage('git clone'){
             steps {
                 echo "git clone"
-                git branch: 'master', credentialsId: 'ea380414-e517-45cb-91dc-882c64c04255', url: ${GIT_REPO_URL}
+                git branch: 'master', credentialsId: 'ea380414-e517-45cb-91dc-882c64c04255', url: "${GIT_REPO_URL}"
             }
         }
         stage('build'){
