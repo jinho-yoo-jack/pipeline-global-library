@@ -1,6 +1,6 @@
 #!/usr/bin/env groovy
 
-def getGitHubBranchList(repositoryURL){
+def call(String repositoryURL){
     def branches = []
     try {
         branches = withCredentials([gitUsernamePassword(credentialsId: 'ea380414-e517-45cb-91dc-882c64c04255', gitToolName: 'Default')]) {
