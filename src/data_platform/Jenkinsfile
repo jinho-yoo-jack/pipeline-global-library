@@ -6,12 +6,16 @@ pipeline {
     agent any 
 
     environment {
-         GIT_REPO_URL = 'https://github.com/jinho-yoo-jack/fastcampus-ci-cd.git'
+        GIT_REPO_URL = 'https://github.com/jinho-yoo-jack/fastcampus-ci-cd.git'
+        repository = "jhy7342/cicd-study"  //docker hub id와 repository 이름
+        DOCKERHUB_CREDENTIALS = credentials('DockerHub') // jenkins에 등록해 놓은 docker hub credentials 이름
+        dockerImage = '' 
     }
 
     parameters {
         // TODO: Must modify BRANCH_NAME to TAG_NAME
         choice(name: 'BRANCH_NAME', choices: getBranchList('https://github.com/jinho-yoo-jack/fastcampus-ci-cd.git'))
+
     }
 
     stages {
@@ -26,9 +30,18 @@ pipeline {
                 sh './gradlew build'
             }
         }
-        stage('Deploy'){
+        stage('Test') {
             steps {
-                sh 'echo "Deploy"'
+                script {
+                    sh "docker --version"
+                    sh "docker compose --version"
+                }
+            }
+        }
+        stage('dockerizing'){
+            steps {
+                sh 'echo "docker build"'
+                sh "docker build -t ${repository}:1.0.0 ."
             }
 
         }
