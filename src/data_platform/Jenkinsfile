@@ -33,9 +33,15 @@ pipeline {
             }
         }
         stage('Deploy'){
+            steps {
+                sh 'echo "Deploy"'
+            }
 
         }
         stage('Re-Execute Application'){
+            steps {
+                sh 'echo "Execute"'
+            }
 
         }
     }
