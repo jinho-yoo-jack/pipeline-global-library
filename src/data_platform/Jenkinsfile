@@ -29,7 +29,7 @@ pipeline {
         }
         stage('build'){
             steps {
-                sh -c "./gradlew build"
+                sh './gradlew build'
             }
         }
         stage('Deploy'){
