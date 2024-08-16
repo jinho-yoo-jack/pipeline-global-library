@@ -12,7 +12,7 @@ pipeline {
     }
 
     environment {
-        GIT_REPO_URL = 'https://github.com/jinho-yoo-jack/fastcampus-ci-cd.git'
+         GIT_REPO_URL = 'https://github.com/jinho-yoo-jack/fastcampus-ci-cd.git'
     }
 
     parameters {
@@ -21,16 +21,14 @@ pipeline {
     }
 
     stages {
-        stage('Build'){
+        stage('git clone'){
             steps {
-                echo "Build"
-                git clone ${GIT_REPO_URL}
-                git checkout ${env.BRANCH_NAME}
-                git pull
-                gradle build
+                echo "git clone"
+                git branch: 'master', credentialsId: 'ea380414-e517-45cb-91dc-882c64c04255', url: ${GIT_REPO_URL}
             }
         }
-        stage('Test'){
+        stage('build'){
+            sh -c "./gradlew build"
 
         }
         stage('Deploy'){
