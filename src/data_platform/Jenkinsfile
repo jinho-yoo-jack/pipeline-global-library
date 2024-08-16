@@ -28,8 +28,9 @@ pipeline {
             }
         }
         stage('build'){
-            sh -c "./gradlew build"
-
+            steps {
+                sh -c "./gradlew build"
+            }
         }
         stage('Deploy'){
 
