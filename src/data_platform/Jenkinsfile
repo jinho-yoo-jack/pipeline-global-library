@@ -8,7 +8,7 @@ pipeline {
     environment {
         GIT_REPO_URL = 'https://github.com/jinho-yoo-jack/fastcampus-ci-cd.git'
         repository = "jhy7342/cicd-study"  //docker hub id와 repository 이름
-        DOCKERHUB_CREDENTIALS = credentials('DockerHub') // jenkins에 등록해 놓은 docker hub credentials 이름
+        DOCKERHUB_CREDENTIALS = credentials('docker-hub-access-key') // jenkins에 등록해 놓은 docker hub credentials 이름
         dockerImage = '' 
     }
 
