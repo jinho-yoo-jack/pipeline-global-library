@@ -9,8 +9,8 @@ def call(String jenkinsHomePath, String srcDir, String destDir, String repositor
         echo "Repository ::: ${repositoryName}"
         def buildDir = "${srcDir}" + "/build/libs"
         try {
-            sh "cp $jenkinsHomePath/$buildDir/*.jar $jenkinsHomePath/$destDir/" // war 파일을 현재 위치로 복사 
-            sh "cp $jenkinsHomePath/$srcDir/Dockerfile $jenkinsHomePath/$destDir/" // Dockerfile
+            sh "cp $jenkinsHomePath/$buildDir/*.jar $destDir" // war 파일을 현재 위치로 복사 
+            sh "cp $jenkinsHomePath/$srcDir/Dockerfile $destDir" // Dockerfile
             sh "cd $jenkinsHomePath/$destDir"
             sh "pwd"
             sh "docker build --platform linux/amd64 -t $repository:$BUILD_NUMBER ."
