@@ -2,7 +2,7 @@
 
 repository = "jhy7342/cicd-study"  //docker hub id와 repository 이름
 DOCKERHUB_CREDENTIALS = credentials('docker-hub-access-key') // jenkins에 등록해 놓은 docker hub credentials 이름
-def call(String jenkinsHomePath, String srcDir, String destDir, String repositoryName) {
+def call(String jenkinsHomePath, String srcDir, String repositoryName) {
     node {
         echo "Source Dir ::: ${srcDir}"
         echo "Destination Dir ::: ${destDir}"
