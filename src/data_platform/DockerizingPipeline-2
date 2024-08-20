@@ -1,0 +1,51 @@
+#!groovy
+@Library('common-api') _
+
+pipeline { 
+    environment { 
+        JENKINS_HOME = "/var/jenkins_home/workspace"
+        repository = "jhy7342/cicd-study"  //docker hub id와 repository 이름
+        DOCKERHUB_CREDENTIALS = credentials('docker-hub-access-key') // jenkins에 등록해 놓은 docker hub credentials 이름
+        dockerImage = '' 
+    }
+    agent any 
+    stages {
+        stage('Building docker image recently version and latest version') { 
+            steps { 
+                script {
+                    createDockerImage("pipeline-ex2", "$repository")
+                }
+                echo "${JOB_NAME}"
+                createDockerImage("$JENKINS_HOME", "pipeline-ex2", "$repository")
+                
+            //   script { 
+            //       sh "cp -rf /var/jenkins_home/workspace/pipeline-ex2/build /var/jenkins_home/workspace/pipeline-ex3/" // war 파일을 현재 위치로 복사 
+            //       sh "cp /var/jenkins_home/workspace/pipeline-ex2/Dockerfile /var/jenkins_home/workspace/pipeline-ex3/" // Dockerfile
+            //       sh "pwd"
+            //       sh "docker build --platform linux/amd64 -t $repository:$BUILD_NUMBER ."
+            //       sh "docker build --platform linux/amd64 -t $repository:latest ."
+            //   }
+            } 
+        }
+        stage('Login'){
+            steps{
+              sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin' // docker hub 로그인
+            }
+        }
+        stage('Deploy our image') { 
+          steps { 
+              script {
+                sh 'docker push $repository:$BUILD_NUMBER' //docker push
+                sh 'docker push $repository:latest' //docker push
+              } 
+          }
+      } 
+      stage('Cleaning up') { 
+		  steps { 
+              sh "docker rmi $repository:$BUILD_NUMBER" // docker image 제거
+              sh "docker rmi $repository:latest" // docker image 제거
+          }
+      } 
+  }
+}
+    
