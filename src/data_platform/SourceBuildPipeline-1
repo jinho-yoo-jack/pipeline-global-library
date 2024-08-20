@@ -12,11 +12,6 @@ pipeline {
         dockerImage = '' 
     }
 
-    parameters {
-        // TODO: Must modify BRANCH_NAME to TAG_NAME
-        choice(name: 'BRANCH_NAME', choices: getBranchList('https://github.com/jinho-yoo-jack/fastcampus-ci-cd.git'))
-    }
-
     stages {
         stage('git clone'){
             steps {
