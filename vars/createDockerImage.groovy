@@ -4,9 +4,9 @@ def call(String srcDir, String repositoryName) {
     node {
         def home = "${JENKINS_HOME}"
         def destDir = "${WORKSPACE}"
-        def buildDir = "${srcDir}" + "/build/libs"
+        def buildDir = "${srcDir}" + "/build"
         try {
-            sh "cp -rf ${home}/$buildDir/build $destDir" // war 파일을 현재 위치로 복사 
+            sh "cp -rf ${home}/$buildDir $destDir" // war 파일을 현재 위치로 복사 
             sh "cp ${home}/$srcDir/Dockerfile $destDir" // Dockerfile
             sh "docker build --platform linux/amd64 -t $repository:$BUILD_NUMBER ."
             sh "docker build --platform linux/amd64 -t $repository:latest ."
