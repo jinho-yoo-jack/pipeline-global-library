@@ -1,5 +1,6 @@
 #!/usr/bin/env groovy
 
+DOCKERHUB_CREDENTIALS = credentials('docker-hub-access-key') // jenkins에 등록해 놓은 docker hub credentials 이름
 def call(String srcDir, String repositoryName) {
     node {
         def home = "${JENKINS_HOME}"
