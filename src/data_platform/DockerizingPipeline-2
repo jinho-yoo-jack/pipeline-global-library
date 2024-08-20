@@ -14,7 +14,8 @@ pipeline {
             steps {
                 script {
                     echo "${JOB_NAME}"
-                    createDockerImage("${PREV_JOB_NAME}", "$repository")
+                    echo "${prev_job_name}"
+                    createDockerImage("${prev_job_name}", "$repository")
                 }
             }
         }

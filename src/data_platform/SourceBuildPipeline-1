@@ -31,7 +31,7 @@ pipeline {
     post {
         success {
             script {
-                build job: 'cicd-study-dockerizing', parameters: [[$class: 'StringParameterValue', name: 'PREV_JOB_NAME', value: "${JOB_NAME}"]]
+                build job: 'cicd-study-dockerizing', parameters: [[$class: 'StringParameterValue', name: 'prev_job_name', value: "${JOB_NAME}"]]
             }
         }
     }
