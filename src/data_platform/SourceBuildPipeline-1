@@ -1,0 +1,38 @@
+#!groovy
+@Library('common-api') _
+
+pipeline {
+
+    agent any 
+
+    environment {
+        GIT_REPO_URL = 'https://github.com/jinho-yoo-jack/fastcampus-ci-cd.git'
+        repository = "jhy7342/cicd-study"  //docker hub id와 repository 이름
+        DOCKERHUB_CREDENTIALS = credentials('docker-hub-access-key') // jenkins에 등록해 놓은 docker hub credentials 이름
+        dockerImage = '' 
+    }
+
+    stages {
+        stage('git clone'){
+            steps {
+                sh "pwd"
+                echo "git clone"
+                echo "${env.BRANCH_NAME}"
+                git branch: "feature/docker", credentialsId: 'ea380414-e517-45cb-91dc-882c64c04255', url: "${GIT_REPO_URL}"
+            }
+        }
+        stage('build'){
+            steps {
+                sh "pwd"
+                sh './gradlew build'
+            }
+        }
+    }
+    post {
+        success {
+            script {
+                build job: 'cicd-study-dockerizing', parameters: [[$class: 'StringParameterValue', name: 'prev_job_name', value: "${JOB_NAME}"]]
+            }
+        }
+    }
+}

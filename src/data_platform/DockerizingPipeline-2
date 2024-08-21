@@ -1,0 +1,50 @@
+#!groovy
+@Library('common-api') _
+
+pipeline {
+    environment {
+        JENKINS_HOME = '/var/jenkins_home/workspace'
+        repository = 'jhy7342/cicd-study'  //docker hub id와 repository 이름
+        DOCKERHUB_CREDENTIALS = credentials('docker-hub-access-key') // jenkins에 등록해 놓은 docker hub credentials 이름
+        dockerImage = ''
+    }
+    agent any
+    stages {
+        stage('Building docker image recently version and latest version') {
+            steps {
+                script {
+                    echo "${JOB_NAME}"
+                    echo "${prev_job_name}"
+                    createDockerImage("${prev_job_name}", "$repository")
+                }
+            }
+        }
+        stage('Login') {
+            steps {
+                sh "echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin"
+            }
+        }
+        stage('Deploy our image') {
+            steps {
+                script {
+                    sh 'docker push $repository:$BUILD_NUMBER' //docker push
+                    sh 'docker push $repository:latest' //docker push
+                }
+            }
+        }
+        stage('Cleaning up') {
+            steps {
+                sh "docker rmi $repository:$BUILD_NUMBER" // docker image 제거
+                sh "docker rmi $repository:latest" // docker image 제거
+            }
+        }
+    }
+    post {
+        success {
+            script {
+                build job: 'cicd-study-restart', parameters: [[$class: 'StringParameterValue', name: 'repository', value: "${repository}"]]
+            }
+        }
+    }
+}
+

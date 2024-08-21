@@ -3,48 +3,69 @@
 
 pipeline {
 
-    agent any 
+    agent any
 
     environment {
         GIT_REPO_URL = 'https://github.com/jinho-yoo-jack/fastcampus-ci-cd.git'
         repository = "jhy7342/cicd-study"  //docker hub id와 repository 이름
-        DOCKERHUB_CREDENTIALS = credentials('DockerHub') // jenkins에 등록해 놓은 docker hub credentials 이름
-        dockerImage = '' 
+        DOCKERHUB_CREDENTIALS = credentials('docker-hub-access-key') // jenkins에 등록해 놓은 docker hub credentials 이름
+        TARGET_HOST = "ec2-3-145-5-141.us-east-2.compute.amazonaws.com"
     }
 
     stages {
-        stage('git clone'){
+        stage('Git clone'){
             steps {
+                sh "pwd"
                 echo "git clone"
-                git branch: 'feature/docker', credentialsId: 'ea380414-e517-45cb-91dc-882c64c04255', url: "${GIT_REPO_URL}"
-                sh "git pull"
+                echo "${env.BRANCH_NAME}"
+                git branch: "feature/docker", credentialsId: 'ea380414-e517-45cb-91dc-882c64c04255', url: "${GIT_REPO_URL}"
             }
         }
-        stage('build'){
+        stage('Build Source Code'){
             steps {
+                sh "pwd"
                 sh './gradlew build'
             }
         }
-        stage('Test') {
+        stage('Build docker image') {
             steps {
                 script {
-                    sh "docker --version"
-                    sh "docker compose --version"
+                    createDockerImage()
                 }
             }
         }
-        stage('dockerizing'){
+        stage('Login') {
             steps {
-                sh 'echo "docker build"'
-                sh "docker build -t ${repository}:1.0.0 ."
+                sh "echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin"
             }
-
         }
-        stage('Re-Execute Application'){
+        stage('Deploy our image') {
             steps {
-                sh 'echo "Execute"'
+                script {
+                    sh 'docker push $repository:$BUILD_NUMBER' //docker push
+                    sh 'docker push $repository:latest' //docker push
+                }
             }
-
+        }
+        stage('Cleaning up') {
+            steps {
+                sh "docker rmi $repository:$BUILD_NUMBER" // docker image 제거
+                sh "docker rmi $repository:latest" // docker image 제거
+            }
+        }
+        stage('Start Application as Docker') {
+            steps {
+                sshagent (credentials: ['controller-ssh-private-key']) {
+                    sh """
+                    ssh -o StrictHostKeyChecking=no ubuntu@${TARGET_HOST} '
+                    pwd
+                    docker-compose down
+                    docker rmi ${repository}:latest
+                    docker-compose up -d
+                    '
+                """
+                }
+            }
         }
     }
 }

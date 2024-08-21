@@ -1,0 +1,50 @@
+pipeline {
+    agent any
+    
+    environment {
+        TARGET_HOST = "ec2-3-145-5-141.us-east-2.compute.amazonaws.com"
+    }
+    
+    stages {
+        stage('Start Application as Docker') {
+            steps {        
+                sshagent (credentials: ['controller-ssh-private-key']) {
+                sh """
+                    ssh -o StrictHostKeyChecking=no ubuntu@${TARGET_HOST} '
+                    pwd
+                    docker-compose down
+                    docker rmi ${repository}:latest
+                    docker-compose up -d
+                    '
+                """
+                }
+            }
+        }
+        
+    }
+    post {
+        success {
+             def destDir = sh (
+                        script: "curl -X GET http://${TARGET_HOST}:8080/test"
+                        returnStdout: true
+                    ).trim()
+            steps {
+                script {
+                    def approval = input(
+                            id: 'wait-approval',
+                            message: 'Health check call?',
+                            submitterParameter: 'status',
+                            parameters: [choice(choices: ['Yes', 'No'],description: 'Are you sure?',name: 'choice')]
+                    )
+                    if (approval['choice'] == 'Yes') {
+    		            response = sh "curl -X GET http://${TARGET_HOST}:8080/test"
+                        echo "${response}"
+                    }
+                    
+                }
+            }
+        }
+        }
+
+    }
+}
