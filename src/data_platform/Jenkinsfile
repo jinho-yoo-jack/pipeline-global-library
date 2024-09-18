@@ -59,15 +59,15 @@ pipeline {
         stage('Deploy our image') {
             steps {
                 script {
-                    sh 'docker push $repository:$BUILD_NUMBER' //docker push
-                    sh 'docker push $repository:latest' //docker push
+                    sh 'docker push $DOCKERHUB_REPOSITORY:$BUILD_NUMBER' //docker push
+                    sh 'docker push $DOCKERHUB_REPOSITORY:latest' //docker push
                 }
             }
         }
         stage('Cleaning up') {
             steps {
-                sh "docker rmi $repository:$BUILD_NUMBER" // docker image 제거
-                sh "docker rmi $repository:latest" // docker image 제거
+                sh "docker rmi $DOCKERHUB_REPOSITORY:$BUILD_NUMBER" // docker image 제거
+                sh "docker rmi $DOCKERHUB_REPOSITORY:latest" // docker image 제거
             }
         }
         stage('Start Application as Docker') {
@@ -77,7 +77,7 @@ pipeline {
                     ssh -o StrictHostKeyChecking=no ubuntu@${TARGET_HOST} '
                     pwd
                     docker-compose down
-                    docker rmi ${repository}:latest
+                    docker rmi ${DOCKERHUB_REPOSITORY}:latest
                     docker-compose up -d
                     '
                 """
