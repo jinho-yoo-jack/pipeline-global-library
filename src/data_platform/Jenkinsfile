@@ -59,14 +59,12 @@ pipeline {
         stage('Deploy our image') {
             steps {
                 script {
-                    sh 'docker push $DOCKERHUB_REPOSITORY:$BUILD_NUMBER' //docker push
-                    sh 'docker push $DOCKERHUB_REPOSITORY:latest' //docker push
+                    sh 'docker push $DOCKERHUB_REPOSITORY' //docker push
                 }
             }
         }
         stage('Cleaning up') {
             steps {
-                sh "docker rmi $DOCKERHUB_REPOSITORY:$BUILD_NUMBER" // docker image 제거
                 sh "docker rmi $DOCKERHUB_REPOSITORY:latest" // docker image 제거
             }
         }
