@@ -1,4 +1,6 @@
 #!groovy
+package data_platform
+
 @Library('common-api') _
 
 pipeline {
