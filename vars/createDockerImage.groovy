@@ -6,7 +6,7 @@ def call() {
     // def home = "${JENKINS_HOME}"
     // def destDir = "${WORKSPACE}"
     // def buildDir = "${srcDir}" + "/build"
-    print(${WORKSPACE})
+    echo "${WORKSPACE}"
     dir("${WORKSPACE}") {                    
         try {
             //sh "cp -rf ${home}/$buildDir $destDir" // war 파일을 현재 위치로 복사 
