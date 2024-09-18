@@ -46,11 +46,7 @@ pipeline {
         }
         stage('Build docker image') {
             steps {
-                script() {
-                    dir ("${env.WORKSPACE}"){
-                        createDockerImage()
-                    }
-                }
+                sh "docker build --no-cache --platform linux/amd64 -t $DOCKERHUB_REPOSITORY ."
             }
         }
         stage('Login') {
