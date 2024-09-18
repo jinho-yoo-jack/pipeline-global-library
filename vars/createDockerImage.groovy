@@ -10,8 +10,8 @@ def call() {
         try {
             //sh "cp -rf ${home}/$buildDir $destDir" // war 파일을 현재 위치로 복사 
             //sh "cp ${home}/$srcDir/Dockerfile $destDir" // Dockerfile
-            sh "docker build --platform linux/amd64 -t $repository:$BUILD_NUMBER ."
-            sh "docker build --platform linux/amd64 -t $repository:latest ."
+            sh "docker build --platform linux/amd64 -t $DOCKERHUB_REPOSITORY:$BUILD_NUMBER ."
+            sh "docker build --platform linux/amd64 -t $DOCKERHUB_REPOSITORY:latest ."
         } catch (error) {
             echo "[createDockerImage call()] Error ::: ${error}"
         }
