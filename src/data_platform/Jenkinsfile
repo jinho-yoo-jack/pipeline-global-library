@@ -46,8 +46,11 @@ pipeline {
         }
         stage('Build docker image') {
             steps {
-                script {
-                    createDockerImage()
+                script() {
+                    print(${env.WORKSPACE})
+                    dir ("${env.WORKSPACE}"){
+                        createDockerImage()
+                    }
                 }
             }
         }
