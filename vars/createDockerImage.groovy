@@ -6,7 +6,8 @@ def call() {
     // def home = "${JENKINS_HOME}"
     // def destDir = "${WORKSPACE}"
     // def buildDir = "${srcDir}" + "/build"
-    dir("${params.workspace}") {                    
+    print(${WORKSPACE})
+    dir("${WORKSPACE}") {                    
         try {
             //sh "cp -rf ${home}/$buildDir $destDir" // war 파일을 현재 위치로 복사 
             //sh "cp ${home}/$srcDir/Dockerfile $destDir" // Dockerfile
