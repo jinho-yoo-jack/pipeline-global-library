@@ -5,16 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4d1fa17c-de51-419b-882c-69358de07683" name="변경" comment="">
-<<<<<<< HEAD
-      <change afterPath="$PROJECT_DIR$/src/data_platform/DockerRestartPipeline-3" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/data_platform/DockerizingPipeline-2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/data_platform/SourceBuildPipeline-1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vars/createDockerImage.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fastcampus-pipeline.iml" beforeDir="false" afterPath="$PROJECT_DIR$/fastcampus-pipeline.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/data_platform/Jenkinsfile" beforeDir="false" afterPath="$PROJECT_DIR$/src/data_platform/Jenkinsfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vars/getBranchList.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/vars/getBranchList.groovy" afterDir="false" />
-=======
       <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/git_toolbox_blame.xml" afterDir="false" />
@@ -23,7 +13,6 @@
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/data_platform/SourceBuildPipeline-1" beforeDir="false" afterPath="$PROJECT_DIR$/src/data_platform/SourceBuildPipeline-1" afterDir="false" />
->>>>>>> b43da6b (MOD: jenkinsfile)
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,21 +51,6 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-<<<<<<< HEAD
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "Merging master",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/jinho/dev/fastcampus-pipeline",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.fileTypes",
-    "vue.rearranger.settings.migration": "true"
-=======
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
@@ -91,19 +65,13 @@
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.fileTypes&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
->>>>>>> b43da6b (MOD: jenkinsfile)
   }
 }</component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-<<<<<<< HEAD
-        <option value="bundled-jdk-9823dce3aa75-b114ca120d71-intellij.indexing.shared.core-IU-242.20224.419" />
-        <option value="bundled-js-predefined-d6986cc7102b-410509235cf1-JavaScript-IU-242.20224.419" />
-=======
         <option value="bundled-jdk-9823dce3aa75-b114ca120d71-intellij.indexing.shared.core-IU-242.21829.142" />
         <option value="bundled-js-predefined-d6986cc7102b-7c0b70fcd90d-JavaScript-IU-242.21829.142" />
->>>>>>> b43da6b (MOD: jenkinsfile)
       </set>
     </attachedChunks>
   </component>
@@ -117,15 +85,10 @@
       <updated>1723774362426</updated>
       <workItem from="1723774363354" duration="30000" />
       <workItem from="1723774399485" duration="382000" />
-<<<<<<< HEAD
-      <workItem from="1723774796418" duration="9791000" />
-      <workItem from="1724201502448" duration="4658000" />
-=======
       <workItem from="1723774796418" duration="9570000" />
       <workItem from="1724765282091" duration="3568000" />
       <workItem from="1725714575517" duration="600000" />
       <workItem from="1725960532686" duration="598000" />
->>>>>>> b43da6b (MOD: jenkinsfile)
     </task>
     <servers />
   </component>
