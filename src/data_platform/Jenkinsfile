@@ -6,7 +6,6 @@ pipeline {
     agent any
 
     environment {
-        GIT_REPO_URL = 'https://github.com/jinho-yoo-jack/fastcampus-ci-cd.git'
         APP_REPO_URL = 'https://github.com/jinho-yoo-jack/fastcampus-ci-cd.git'
         GITHUB_CREDENTIAL_ID = 'github-access-token'
         DOCKERHUB_CREDENTIALS = credentials('docker-hub-access-key') // jenkins에 등록해 놓은 docker hub credentials 이름
