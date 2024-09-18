@@ -7,12 +7,15 @@ def call() {
         // def home = "${JENKINS_HOME}"
         // def destDir = "${WORKSPACE}"
         // def buildDir = "${srcDir}" + "/build"
-        try {
+        dir("${params.workspace}") {                    
+            try {
             //sh "cp -rf ${home}/$buildDir $destDir" // war 파일을 현재 위치로 복사 
             //sh "cp ${home}/$srcDir/Dockerfile $destDir" // Dockerfile
-            sh "docker build --no-cache --platform linux/amd64 -t $DOCKERHUB_REPOSITORY ."
-        } catch (error) {
-            echo "[createDockerImage call()] Error ::: ${error}"
+                sh "docker build --no-cache --platform linux/amd64 -t $DOCKERHUB_REPOSITORY ."
+            } catch (error) {
+                echo "[createDockerImage call()] Error ::: ${error}"
+            }
         }
+        
     }
 }
