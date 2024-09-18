@@ -76,6 +76,7 @@ pipeline {
                     pwd
                     docker-compose down
                     docker rmi ${DOCKERHUB_REPOSITORY}:latest
+                    docker pull ${DOCKERHUB_REPOSITORY}
                     docker-compose up -d
                     '
                 """
