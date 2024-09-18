@@ -41,7 +41,7 @@ pipeline {
         stage('Build Source Code'){
             steps {
                 sh "pwd"
-                sh './gradlew build'
+                sh './gradlew clean test bootJar'
             }
         }
         stage('Build docker image') {
@@ -56,7 +56,7 @@ pipeline {
                 sh "echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin"
             }
         }
-        stage('Deploy our image') {
+        stage('Deploy Docker image') {
             steps {
                 script {
                     sh 'docker push $DOCKERHUB_REPOSITORY' //docker push
