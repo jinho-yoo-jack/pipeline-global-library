@@ -3,7 +3,7 @@
 
 pipeline {
 
-    agent any 
+    agent any
 
     environment {
         GIT_REPO_URL = 'https://github.com/jinho-yoo-jack/fastcampus-ci-cd.git'
@@ -72,9 +72,9 @@ pipeline {
             }
         }
         stage('Start Application as Docker') {
-            steps {        
+            steps {
                 sshagent (credentials: ['controller-ssh-private-key']) {
-                sh """
+                    sh """
                     ssh -o StrictHostKeyChecking=no ubuntu@${TARGET_HOST} '
                     pwd
                     docker-compose down
