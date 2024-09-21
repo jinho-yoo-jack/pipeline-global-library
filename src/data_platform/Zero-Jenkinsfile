@@ -117,10 +117,11 @@ pipeline {
         stage('Apply New Release Blue'){
             input {
                 message "Should we continue?"
-                ok "Yes, we should."
-                parameters {
-                    string(name: 'PERSON', defaultValue: 'Mr. Jenkins', description: 'Who should I say hello to?')
-                }
+                ok "Yes"
+                parameters: [choice(choices: ['Deploy', 'Cancel'], description: 'Are you sure?', name: 'choice')]
+            }
+            when {
+                input.choice == 'Deploy'
             }
             steps {
                 sshagent (credentials: ['controller-ssh-private-key']) {
