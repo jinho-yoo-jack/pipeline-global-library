@@ -68,9 +68,7 @@ pipeline {
             steps {
                 script {
                     NGINX_CONF_PATH="/etc/nginx/conf.d"
-                    def output = sh(script: "echo \$(ls)", returnStdout: true)
                 }
-                    echo "Output: ${output}"
                 sshagent (credentials: ['controller-ssh-private-key']) {
                     sh """
                     ssh -o StrictHostKeyChecking=no ubuntu@${TARGET_HOST} '
@@ -84,26 +82,6 @@ pipeline {
                         docker pull ${DOCKERHUB_REPOSITORY}
                         docker-compose -f docker-compose-app.yml up app-green -d
                     fi
-                    '
-                """
-                }
-            }
-        }
-
-        stage('Change UpStream Conf: all-up to green-down'){
-            steps {
-                script {
-                    NGINX_CONF_PATH="/etc/nginx/conf.d"
-                }
-                sshagent (credentials: ['controller-ssh-private-key']) {
-                    sh """
-                    ssh -o StrictHostKeyChecking=no ubuntu@${TARGET_HOST} '
-                    docker exec ubuntu-api-gateway-1 cp ${NGINX_CONF_PATH}/green-shutdown.conf ${NGINX_CONF_PATH}/fastcampus-cicd.conf
-                    docker exec ubuntu-api-gateway-1 service nginx reload
-                    docker-compose -f docker-compose-app.yml down app-green
-                    docker rmi ${DOCKERHUB_REPOSITORY}:latest
-                    docker pull ${DOCKERHUB_REPOSITORY}
-                    docker-compose -f docker-compose-app.yml up app-green -d
                     '
                 """
                 }
