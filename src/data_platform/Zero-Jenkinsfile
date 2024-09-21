@@ -84,20 +84,20 @@ pipeline {
             }
         }
 
-        stage('Start Application as Docker') {
-            steps {
-                sshagent (credentials: ['controller-ssh-private-key']) {
-                    sh """
-                    ssh -o StrictHostKeyChecking=no ubuntu@${TARGET_HOST} '
-                    pwd
-                    docker-compose down
-                    docker rmi ${DOCKERHUB_REPOSITORY}:latest
-                    docker pull ${DOCKERHUB_REPOSITORY}
-                    docker-compose up -d
-                    '
-                """
-                }
-            }
-        }
+        // stage('Start Application as Docker') {
+        //     steps {
+        //         sshagent (credentials: ['controller-ssh-private-key']) {
+        //             sh """
+        //             ssh -o StrictHostKeyChecking=no ubuntu@${TARGET_HOST} '
+        //             pwd
+        //             docker-compose down
+        //             docker rmi ${DOCKERHUB_REPOSITORY}:latest
+        //             docker pull ${DOCKERHUB_REPOSITORY}
+        //             docker-compose up -d
+        //             '
+        //         """
+        //         }
+        //     }
+        // }
     }
 }
