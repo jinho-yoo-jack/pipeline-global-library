@@ -120,9 +120,6 @@ pipeline {
                 ok "Yes"
                 parameters: [choice(choices: ['Deploy', 'Cancel'], description: 'Are you sure?', name: 'choice')]
             }
-            when {
-                input.choice == 'Deploy'
-            }
             steps {
                 sshagent (credentials: ['controller-ssh-private-key']) {
                     sh '''
