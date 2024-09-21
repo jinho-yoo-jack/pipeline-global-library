@@ -135,20 +135,18 @@ pipeline {
             }
         }
 
-        // stage('Start Application as Docker') {
-        //     steps {
-        //         sshagent (credentials: ['controller-ssh-private-key']) {
-        //             sh """
-        //             ssh -o StrictHostKeyChecking=no ubuntu@${TARGET_HOST} '
-        //             pwd
-        //             docker-compose down
-        //             docker rmi ${DOCKERHUB_REPOSITORY}:latest
-        //             docker pull ${DOCKERHUB_REPOSITORY}
-        //             docker-compose up -d
-        //             '
-        //         """
-        //         }
-        //     }
-        // }
+        stage('Change Status to All-Up'){
+            steps {
+                sshagent (credentials: ['controller-ssh-private-key']) {
+                    sh '''
+                        ssh -o StrictHostKeyChecking=no ubuntu@${TARGET_HOST} '
+                            export NGINX_CONF_PATH="/etc/nginx/conf.d"
+                            docker exec ubuntu-api-gateway-1 cp ${NGINX_CONF_PATH}/all-up.conf ${NGINX_CONF_PATH}/fastcampus-cicd.conf
+                            docker exec ubuntu-api-gateway-1 service nginx reload
+                        '
+                    '''
+                }
+            }
+        }
     }
 }
