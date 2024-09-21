@@ -91,18 +91,42 @@ pipeline {
                     sh '''
                     ssh -o StrictHostKeyChecking=no ubuntu@${TARGET_HOST} '
                     export NGINX_CONF_PATH="/etc/nginx/conf.d"
-                    GREEN_STATUS=`docker exec ubuntu-app-green-1 curl -XGET localhost:8080/health`
-                    if [[ "$GREEN_STATUS" == "cicd-study-blue Health Statue ::: Good" ]]; then
-                        docker exec ubuntu-api-gateway-1 cp ${NGINX_CONF_PATH}/blue-shutdown.conf ${NGINX_CONF_PATH}/fastcampus-cicd.conf
-                        RELOAD_RESULT=`docker exec ubuntu-api-gateway-1 service nginx reload`
-                        if [[ "$RELOAD_RESULT" == "Reloading nginx: nginx." ]]; then
-                            docker-compose -f docker-compose-app.yml down app-blue
-                            docker-compose -f docker-compose-app.yml up app-blue -d
-                        fi
-                    fi
+                    for retry_count in \$(seq 5)
+	                    do
+	                        if curl -s "http://localhost:8082/health" > /dev/null
+	                        then
+	                            echo "Health Check Successful"
+	                            break
+	                        fi
+	
+	                        if [ \$retry_count -eq 10 ]
+	                        then
+	                            echo "Health Check Failed"
+	                            exit 1
+	                        fi
+	
+	                        echo "Retry After 10 Secs"
+	                        sleep 10
+	                    done
                     '
                 '''
                 }
+            }
+        }
+
+        stage('Apply New Release Blue'){
+            steps {
+                sshagent (credentials: ['controller-ssh-private-key']) {
+                    sh '''
+                        ssh -o StrictHostKeyChecking=no ubuntu@${TARGET_HOST} '
+                            docker exec ubuntu-api-gateway-1 cp ${NGINX_CONF_PATH}/blue-shutdown.conf ${NGINX_CONF_PATH}/fastcampus-cicd.conf
+                            RELOAD_RESULT=`docker exec ubuntu-api-gateway-1 service nginx reload`
+                            if [[ "$RELOAD_RESULT" == "Reloading nginx: nginx." ]]; then
+                                docker-compose -f docker-compose-app.yml down app-blue
+                                docker-compose -f docker-compose-app.yml up app-blue -d
+                            fi
+                        '
+                    '''
             }
         }
 
