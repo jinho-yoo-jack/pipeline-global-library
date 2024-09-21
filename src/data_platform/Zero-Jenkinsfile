@@ -108,9 +108,6 @@ pipeline {
 	                        echo "Retry After 10 Secs"
 	                        sleep 10
 	                    done
-                    export NGINX_CONF_PATH="/etc/nginx/conf.d"
-                    docker exec ubuntu-api-gateway-1 cp ${NGINX_CONF_PATH}/blue-shutdown.conf ${NGINX_CONF_PATH}/fastcampus-cicd.conf
-                    docker exec ubuntu-api-gateway-1 service nginx reload
                     '
                 '''
                 }
@@ -118,6 +115,13 @@ pipeline {
         }
 
         stage('Apply New Release Blue'){
+            input(
+                id: 'wait-approval',
+                message: 'Deply New Release at App-Blue?',
+                submitterParameter: 'approver',
+                parameters: [choice(choices: ['Cancel', 'Deploy'], description: 'Are you sure?', name: 'choice')]
+            )
+            when(approval['choice'] == 'Deploy')
             steps {
                 sshagent (credentials: ['controller-ssh-private-key']) {
                     sh '''
