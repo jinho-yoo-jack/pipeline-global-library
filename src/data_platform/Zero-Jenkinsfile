@@ -115,12 +115,7 @@ pipeline {
         }
 
         stage('Apply New Release Blue'){
-            input {
-                id: 'result',
-                message: 'Deply New Release at App-Blue?',
-                submitterParameter: 'approver',
-                parameters: [choice(choices: ['Cancel', 'Deploy'], description: 'Are you sure?', name: 'choice')]
-            }
+            input id: 'result', message: 'Deply New Release at App-Blue?',submitterParameter: 'approver', parameters: [choice(choices: ['Cancel', 'Deploy'], description: 'Are you sure?', name: 'choice')]
             when(result['choice'] == 'Deploy')
             steps {
                 sshagent (credentials: ['controller-ssh-private-key']) {
