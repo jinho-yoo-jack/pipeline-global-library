@@ -70,8 +70,9 @@ pipeline {
                     NGINX_CONF_PATH="/etc/nginx/conf.d"
                 }
                 sshagent (credentials: ['controller-ssh-private-key']) {
-                    sh """
+                    sh '''
                     ssh -o StrictHostKeyChecking=no ubuntu@${TARGET_HOST} '
+                    export NGINX_CONF_PATH="/etc/nginx/conf.d"
                     docker exec ubuntu-api-gateway-1 cp ${NGINX_CONF_PATH}/green-shutdown.conf ${NGINX_CONF_PATH}/fastcampus-cicd.conf
                     RELOAD_RESULT=docker exec ubuntu-api-gateway-1 service nginx reload
                     echo $RELOAD_RESULT
@@ -83,7 +84,7 @@ pipeline {
                         docker-compose -f docker-compose-app.yml up app-green -d
                     fi
                     '
-                """
+                '''
                 }
             }
         }
