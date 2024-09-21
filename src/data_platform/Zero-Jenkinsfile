@@ -73,8 +73,7 @@ pipeline {
                     docker exec ubuntu-api-gateway-1 cp ${NGINX_CONF_PATH}/green-shutdown.conf ${NGINX_CONF_PATH}/fastcampus-cicd.conf
                     RELOAD_RESULT=`docker exec ubuntu-api-gateway-1 service nginx reload`
                     echo $RELOAD_RESULT
-                    if [ $RELOAD_RESULT = "Reloading nginx: nginx." ]
-                    then
+                    if [[ "$RELOAD_RESULT" == "Reloading nginx: nginx." ]]; then
                         docker-compose -f docker-compose-app.yml down app-green
                         docker rmi ${DOCKERHUB_REPOSITORY}:latest
                         docker pull ${DOCKERHUB_REPOSITORY}
