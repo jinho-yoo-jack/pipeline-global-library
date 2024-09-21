@@ -115,9 +115,28 @@ pipeline {
         }
 
         stage('Apply New Release Blue'){
-            input id: 'result', message: 'Deply New Release at App-Blue?',submitterParameter: 'approver', parameters: [choice(choices: ['Cancel', 'Deploy'], description: 'Are you sure?', name: 'choice')]
-            when(result['choice'] == 'Deploy')
             steps {
+                script {
+                    try {
+                        def approval = input(
+                                id: 'wait-approval',
+                                message: 'Deploy?',
+                                submitterParameter: 'approver',
+                                parameters: [choice(choices: ['Cancel', 'Deploy'], description: 'Are you sure?', name: 'choice')]
+                        )
+                        print(approval['approver'])
+
+                        if (approval['choice'] == 'Deploy') {
+                            print('choice deploy')
+                            currentBuild.result = 'Success'
+                        } else {
+                            throw new Exception('Choosed cancel')
+                        }
+                    } catch (Exception e) {
+                        error e
+                        currentBuild.result = 'Fail'
+                    }
+                }
                 sshagent (credentials: ['controller-ssh-private-key']) {
                     sh '''
                         ssh -o StrictHostKeyChecking=no ubuntu@${TARGET_HOST} '
