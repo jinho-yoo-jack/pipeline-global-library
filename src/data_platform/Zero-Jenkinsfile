@@ -108,6 +108,9 @@ pipeline {
 	                        echo "Retry After 10 Secs"
 	                        sleep 10
 	                    done
+                    export NGINX_CONF_PATH="/etc/nginx/conf.d"
+                    docker exec ubuntu-api-gateway-1 cp ${NGINX_CONF_PATH}/blue-shutdown.conf ${NGINX_CONF_PATH}/fastcampus-cicd.conf
+                    docker exec ubuntu-api-gateway-1 service nginx reload
                     '
                 '''
                 }
@@ -119,6 +122,7 @@ pipeline {
                 sshagent (credentials: ['controller-ssh-private-key']) {
                     sh '''
                         ssh -o StrictHostKeyChecking=no ubuntu@${TARGET_HOST} '
+                            export NGINX_CONF_PATH="/etc/nginx/conf.d"
                             docker exec ubuntu-api-gateway-1 cp ${NGINX_CONF_PATH}/blue-shutdown.conf ${NGINX_CONF_PATH}/fastcampus-cicd.conf
                             RELOAD_RESULT=`docker exec ubuntu-api-gateway-1 service nginx reload`
                             if [[ "$RELOAD_RESULT" == "Reloading nginx: nginx." ]]; then
